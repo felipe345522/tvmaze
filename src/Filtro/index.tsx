@@ -19,7 +19,7 @@ const Filtro: React.FC<FiltroProps> = ({ genres, onFilter }) => {
 
   return (
     <div className="filtro">
-      <h3>Filtrar por Género</h3>
+      <h3>Seleccionar Géneros</h3>
       <div className="genres">
         {genres.map((genre) => (
           <label key={genre}>

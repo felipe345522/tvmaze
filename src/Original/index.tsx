@@ -79,8 +79,10 @@ const Original: React.FC = () => {
     const isFavorite = favorites.some(fav => fav.id === show.id);
     if (isFavorite) {
       favorites = favorites.filter(fav => fav.id !== show.id);
+      alert('Eliminado de favoritos');
     } else {
       favorites.push(show);
+      alert('Agregado a favoritos');
     }
     localStorage.setItem('favorites', JSON.stringify(favorites));
   };

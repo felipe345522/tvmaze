@@ -13,9 +13,10 @@ interface ListaElementosProps {
   shows: Show[];
   onSelectShow: (show: Show) => void;
   onToggleFavorite: (show: Show) => void;
+  buttonText?: string;
 }
 
-const ListaElementos: React.FC<ListaElementosProps> = ({ shows, onSelectShow, onToggleFavorite }) => {
+const ListaElementos: React.FC<ListaElementosProps> = ({ shows, onSelectShow, onToggleFavorite, buttonText = "Favorito" }) => {
   return (
     <div className="lista-elementos">
       <div className="shows-grid">
@@ -25,7 +26,7 @@ const ListaElementos: React.FC<ListaElementosProps> = ({ shows, onSelectShow, on
             <h3 onClick={() => onSelectShow(show)}>{show.name}</h3>
             <p>Géneros: {show.genres.join(', ')}</p>
             <p>Rating: {show.rating.average || 'N/A'}</p>
-            <button onClick={() => onToggleFavorite(show)}>Favorito</button>
+            <button onClick={() => onToggleFavorite(show)}>{buttonText}</button>
           </div>
         ))}
       </div>
