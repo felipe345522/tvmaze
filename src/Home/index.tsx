@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import Buscador from '../Buscador';
 import Filtro from '../Filtro';
-impprt Splash from '../Splash';
-
+import ListaElementos from '../Lista de elementos';
+import DetallePagina from '../Detalle página';
 
 type Show = {
   id: number;
@@ -22,6 +22,7 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedShow, setSelectedShow] = useState<Show | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -84,26 +85,41 @@ const Home: React.FC = () => {
     setFilteredShows(filtered);
   };
 
+  const handleSelectShow = (show: Show) => {
+    setSelectedShow(show);
+  };
+
+  const handleToggleFavorite = (show: Show) => {
+    const stored = localStorage.getItem('favorites');
+    let favorites: Show[] = stored ? JSON.parse(stored) : [];
+    const isFavorite = favorites.some(fav => fav.id === show.id);
+    if (isFavorite) {
+      favorites = favorites.filter(fav => fav.id !== show.id);
+    } else {
+      favorites.push(show);
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  };
+
+  const handleBack = () => {
+    setSelectedShow(null);
+  };
+
   const uniqueGenres = Array.from(new Set(allShows.flatMap(show => show.genres)));
 
   if (loading) return <div className="loading">Cargando shows...</div>;
   if (error) return <div className="error">{error}</div>;
+
+  if (selectedShow) {
+    return <DetallePagina show={selectedShow} onBack={handleBack} onToggleFavorite={handleToggleFavorite} />;
+  }
 
   return (
     <div className="home">
       <h1>Shows Populares</h1>
       <Buscador onSearch={handleSearch} />
       <Filtro genres={uniqueGenres} onFilter={handleFilter} />
-      <div className="shows-grid">
-        {filteredShows.map((show) => (
-          <div key={show.id} className="show-card">
-            <img src={show.image?.medium || '/placeholder.png'} alt={show.name} />
-            <h3>{show.name}</h3>
-            <p>Géneros: {show.genres.join(', ')}</p>
-            <p>Rating: {show.rating.average || 'N/A'}</p>
-          </div>
-        ))}
-      </div>
+      <ListaElementos shows={filteredShows} onSelectShow={handleSelectShow} onToggleFavorite={handleToggleFavorite} />
     </div>
   );
 };
