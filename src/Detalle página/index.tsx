@@ -1,15 +1,6 @@
 import React from 'react';
 import './style.css';
-
-type Show = {
-  id: number;
-  name: string;
-  image?: { medium: string; original: string } | null;
-  genres: string[];
-  rating: { average: number | null };
-  summary: string | null;
-  officialSite: string | null;
-};
+import type { Show } from '../types';
 
 interface DetallePaginaProps {
   show: Show | null;

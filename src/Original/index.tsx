@@ -4,17 +4,15 @@ import Buscador from '../Buscador';
 import Filtro from '../Filtro';
 import ListaElementos from '../Lista de elementos';
 import DetallePagina from '../Detalle página';
-
-type Show = {
-  id: number;
-  name: string;
-  image?: { medium: string; original: string } | null;
-  genres: string[];
-  rating: { average: number | null };
-  summary: string | null;
-  officialSite: string | null;
-  network?: { name: string } | null;
-};
+import type { Show } from '../types';
+import {
+  getOriginalShowList,
+  filterShowsByGenres,
+  getUniqueGenres,
+  computeOriginalityScore,
+  createOriginalShowTag,
+  getTopOriginalShows,
+} from './originalUtils';
 
 const Original: React.FC = () => {
   const [allOriginalShows, setAllOriginalShows] = useState<Show[]>([]);
@@ -29,8 +27,7 @@ const Original: React.FC = () => {
     fetch('https://api.tvmaze.com/shows')
       .then(response => response.json())
       .then((data: Show[]) => {
-        // Filter for shows with network (original network shows)
-        const originals = data.filter(show => show.network).slice(0, 48);
+        const originals = getOriginalShowList(data);
         setAllOriginalShows(originals);
         setBaseShows(originals);
         setFilteredShows(originals);
@@ -62,10 +59,7 @@ const Original: React.FC = () => {
   };
 
   const applyFilter = (shows: Show[], genres: string[]) => {
-    let filtered = shows;
-    if (genres.length > 0) {
-      filtered = shows.filter(show => genres.some(genre => show.genres.includes(genre)));
-    }
+    const filtered = filterShowsByGenres(shows, genres);
     setFilteredShows(filtered);
   };
 
@@ -91,7 +85,8 @@ const Original: React.FC = () => {
     setSelectedShow(null);
   };
 
-  const uniqueGenres = Array.from(new Set(allOriginalShows.flatMap(show => show.genres)));
+  const uniqueGenres = getUniqueGenres(allOriginalShows);
+  const topOriginalShows = getTopOriginalShows(allOriginalShows, 3);
 
   if (loading) return <div className="loading">Cargando shows originales...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -105,6 +100,20 @@ const Original: React.FC = () => {
       <h1>Shows Originales</h1>
       <Buscador onSearch={handleSearch} />
       <Filtro genres={uniqueGenres} onFilter={handleFilter} />
+      {topOriginalShows.length > 0 && (
+        <section className="original-highlight">
+          <h2>Selección original</h2>
+          <div className="highlight-grid">
+            {topOriginalShows.map(show => (
+              <article key={show.id} className="highlight-card">
+                <h3>{show.name}</h3>
+                <p>{createOriginalShowTag(show)}</p>
+                <span>Puntaje original: {computeOriginalityScore(show)}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
       <ListaElementos shows={filteredShows} onSelectShow={handleSelectShow} onToggleFavorite={handleToggleFavorite} />
     </div>
   );

@@ -4,16 +4,7 @@ import Buscador from '../Buscador';
 import Filtro from '../Filtro';
 import ListaElementos from '../Lista de elementos';
 import DetallePagina from '../Detalle página';
-
-type Show = {
-  id: number;
-  name: string;
-  image?: { medium: string; original: string } | null;
-  genres: string[];
-  rating: { average: number | null };
-  summary: string | null;
-  officialSite: string | null;
-};
+import type { Show } from '../types';
 
 const Home: React.FC = () => {
   const [allShows, setAllShows] = useState<Show[]>([]);
