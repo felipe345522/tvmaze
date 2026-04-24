@@ -1,6 +1,7 @@
 .menu {
   background-color: #333;
   padding: 1rem;
+  width: 100%;
 }
 
 .menu ul {
@@ -10,6 +11,8 @@
   gap: 1rem;
   margin: 0;
   padding: 0;
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
 .menu button {
