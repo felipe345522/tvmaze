@@ -1,0 +1,35 @@
+.usuario {
+  padding: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.usuario h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login, .profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.login button, .profile button {
+  padding: 0.5rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login button:hover, .profile button:hover {
+  background-color: #2980b9;
+}

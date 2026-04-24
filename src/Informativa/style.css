@@ -1,0 +1,28 @@
+.informativa {
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.informativa h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.informativa h2 {
+  margin-top: 2rem;
+}
+
+.informativa ul {
+  list-style-type: disc;
+  margin-left: 2rem;
+}
+
+.informativa a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.informativa a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,10 @@
+.icono {
+  display: inline-block;
+  color: #333;
+  font-size: 24px;
+}
+
+.icono svg {
+  width: 100%;
+  height: 100%;
+}
